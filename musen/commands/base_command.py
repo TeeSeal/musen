@@ -1,11 +1,17 @@
-from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Sequence, Union
+from __future__ import annotations
 
-from discord import Interaction
-from discord.abc import Snowflake
-from discord.app_commands.translator import locale_str
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+
 from discord.utils import MISSING
 from utils import to_camel
+
+if TYPE_CHECKING:
+    from typing import Any, Optional, Sequence, Union
+
+    from discord import Interaction
+    from discord.abc import Snowflake
+    from discord.app_commands.translator import locale_str
 
 
 class BaseCommand(ABC):
@@ -14,7 +20,7 @@ class BaseCommand(ABC):
     guild: Optional[Snowflake] = MISSING
     guilds: Sequence[Snowflake] = MISSING
     auto_locale_strings: bool = True
-    extras: Dict[Any, Any] = MISSING
+    extras: dict[Any, Any] = MISSING
 
     @property
     def name(self) -> Union[str, locale_str]:

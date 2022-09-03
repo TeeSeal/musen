@@ -1,13 +1,20 @@
-from typing import Type
+from __future__ import annotations
+
+import logging
+import os
+from typing import TYPE_CHECKING
 
 import discord
-from commands.base_command import BaseCommand
+import lavalink
 from discord import app_commands
+
+if TYPE_CHECKING:
+    from commands.base_command import BaseCommand
 
 MY_GUILD = discord.Object(id=117271426867789833)
 
 
-class Client(discord.Client):
+class MusenClient(discord.Client):
     def __init__(self, intents: discord.Intents):
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
@@ -20,6 +27,16 @@ class Client(discord.Client):
     #     self.tree.clear_commands(guild=MY_GUILD)
     #     self.tree.clear_commands(guild=None)
     #     await self.tree.sync()
+
+    async def on_connect(self) -> None:
+        if self.user is not None:
+            self.lavalink = lavalink.Client(self.user.id)
+            self.lavalink.add_node(
+                host=os.getenv("LAVALINK_HOST", "localhost"),
+                port=os.getenv("LAVALINK_PORT", 2333),
+                password=os.getenv("LAVALINK_PASSWORD", 2333),
+                region=os.getenv("LAVALINK_REGION", "eu"),
+            )
 
     def register_command(self, command: BaseCommand) -> None:
         self.tree.command(

@@ -1,4 +1,11 @@
-from commands.base_command import BaseCommand, Interaction
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from commands.base_command import BaseCommand
+
+if TYPE_CHECKING:
+    from discord import Interaction
 
 
 class Ping(BaseCommand):
