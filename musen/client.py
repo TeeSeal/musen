@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 import discord
 import lavalink
-from discord import app_commands
+from command_tree import MusenCommandTree
 
 if TYPE_CHECKING:
     from commands.base_command import BaseCommand
@@ -16,7 +16,7 @@ MY_GUILD = discord.Object(id=117271426867789833)
 class MusenClient(discord.Client):
     def __init__(self, intents: discord.Intents):
         super().__init__(intents=intents)
-        self.tree = app_commands.CommandTree(self)
+        self.tree = MusenCommandTree(self)
 
     async def setup_hook(self) -> None:
         self.tree.copy_global_to(guild=MY_GUILD)
