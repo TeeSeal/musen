@@ -3,8 +3,9 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from commands.errors import MusenCommandError
 from discord import app_commands
+
+from .errors import MusenCommandError
 
 if TYPE_CHECKING:
     from discord import Interaction

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 import discord
 import lavalink
-from command_tree import MusenCommandTree
+from commands.tree import MusenCommandTree
 
 if TYPE_CHECKING:
     from commands.base_command import BaseCommand
