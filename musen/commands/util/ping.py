@@ -11,5 +11,5 @@ if TYPE_CHECKING:
 class Ping(BaseCommand):
     description = "Pong!"
 
-    async def handler(self, interaction: Interaction) -> None:
+    async def callback(self, interaction: Interaction) -> None:
         await interaction.response.send_message("Pong!")

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import os
 from typing import TYPE_CHECKING
 
@@ -47,4 +46,4 @@ class MusenClient(discord.Client):
             guilds=command.guilds,
             auto_locale_strings=command.auto_locale_strings,
             extras=command.extras,
-        )(command.handler)
+        )(command.callback)

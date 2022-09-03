@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import discord
@@ -29,7 +31,7 @@ class LavalinkVoiceClient(discord.VoiceClient):
         timeout: float,
         reconnect: bool,
         self_deaf: bool = False,
-        self_mute: bool = False
+        self_mute: bool = False,
     ) -> None:
         self.lavalink.player_manager.create(guild_id=self.channel.guild.id)
         await self.channel.guild.change_voice_state(
