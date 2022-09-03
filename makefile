@@ -1,2 +1,2 @@
 dev:
-	dotenv run -- python main.py
+	dotenv run -- python musen/main.py
