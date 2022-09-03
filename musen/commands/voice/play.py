@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
 from commands.checks import user_is_in_voice_channel
-from discord.app_commands import check, guild_only
+from discord.app_commands import check, describe, guild_only
 from voice.lavalink_voice_client import LavalinkVoiceClient
 
 if TYPE_CHECKING:
@@ -19,6 +19,7 @@ class Play(BaseCommand):
 
     @guild_only
     @check(user_is_in_voice_channel)
+    @describe(query="URL or search query")
     async def callback(self, interaction: VoiceInteraction, query: str) -> None:
         player = interaction.client.lavalink.player_manager.create(interaction.guild_id)
         query = query.strip("<>")
