@@ -1,3 +1,5 @@
+import os
+
 import discord
 
 intents = discord.Intents.default()
@@ -20,4 +22,7 @@ async def on_message(message: discord.Message) -> None:
         await message.channel.send("Hello!")
 
 
-client.run("your token here")
+token = os.getenv("TOKEN")
+
+if token is not None:
+    client.run(token)
