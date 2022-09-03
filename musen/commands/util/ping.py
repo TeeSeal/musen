@@ -1,4 +1,4 @@
-from .base_command import BaseCommand, Interaction
+from commands.base_command import BaseCommand, Interaction
 
 
 class Ping(BaseCommand):

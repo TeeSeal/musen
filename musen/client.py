@@ -16,11 +16,10 @@ class Client(discord.Client):
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
 
-    async def on_ready(self) -> None:
-        # self.tree.clear_commands(guild=MY_GUILD)
-        # self.tree.clear_commands(guild=None)
-        # await self.tree.sync()
-        ...
+    # async def on_ready(self) -> None:
+    #     self.tree.clear_commands(guild=MY_GUILD)
+    #     self.tree.clear_commands(guild=None)
+    #     await self.tree.sync()
 
     def register_command(self, command: BaseCommand) -> None:
         self.tree.command(
