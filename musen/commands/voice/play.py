@@ -10,6 +10,8 @@ from voice.lavalink_voice_client import LavalinkVoiceClient
 
 if TYPE_CHECKING:
     from custom_types import VoiceInteraction
+    from lavalink import DefaultPlayer
+
 
 url_rx = re.compile(r"https?://(?:www\.)?.+")
 
@@ -21,7 +23,9 @@ class Play(BaseCommand):
     @check(user_is_in_voice_channel)
     @describe(query="URL or search query")
     async def callback(self, interaction: VoiceInteraction, query: str) -> None:
-        player = interaction.client.lavalink.player_manager.create(interaction.guild_id)
+        player: DefaultPlayer = interaction.client.lavalink.player_manager.create(
+            interaction.guild_id
+        )
         query = query.strip("<>")
 
         if not url_rx.match(query):
