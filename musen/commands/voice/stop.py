@@ -8,15 +8,18 @@ from discord.app_commands import check, guild_only
 
 if TYPE_CHECKING:
     from custom_types import ConnectedVoiceInteraction
+    from lavalink import DefaultPlayer
 
 
 class Stop(BaseCommand):
-    description = "Search and play a track for the given query"
+    description = "Stop playback and disconnect"
 
     @guild_only
     @check(user_is_in_same_voice_channel)
     async def callback(self, interaction: ConnectedVoiceInteraction) -> None:
-        player = interaction.client.lavalink.player_manager.get(interaction.guild_id)
+        player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
+            interaction.guild_id
+        )
 
         player.queue.clear()
         await player.stop()
