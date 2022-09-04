@@ -28,12 +28,13 @@ class Queue(BaseCommand):
             current_track = format_track(player.current, prefix="")
             response_lines.append(f"Now playing: {current_track}")
 
-        response_lines.extend(("", "Queue:"))
-        response_lines.extend(map(format_track, player.queue[:10]))
+        if player.queue:
+            response_lines.extend(("", "Queue:"))
+            response_lines.extend(map(format_track, player.queue[:10]))
 
-        queue_len = len(player.queue)
-        if queue_len > 10:
-            response_lines.append(f"\nAnd {queue_len - 10} more")
+            queue_len = len(player.queue)
+            if queue_len > 10:
+                response_lines.append(f"\nAnd {queue_len - 10} more")
 
         response = "\n".join(response_lines)
         return await interaction.response.send_message(response)
