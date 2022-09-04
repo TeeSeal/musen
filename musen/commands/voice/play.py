@@ -36,9 +36,6 @@ class Play(BaseCommand):
         if not results or not results.tracks:
             return await interaction.response.send_message("Found nothing")
 
-        player.store("channel", interaction.channel_id)
-        await interaction.user.voice.channel.connect(cls=LavalinkVoiceClient)  # type: ignore
-
         if results.load_type == "PLAYLIST_LOADED":
             tracks = results.tracks
 
@@ -54,4 +51,6 @@ class Play(BaseCommand):
         await interaction.response.send_message(response)
 
         if not player.is_playing:
+            player.store("channel", interaction.channel_id)
+            await interaction.user.voice.channel.connect(cls=LavalinkVoiceClient)  # type: ignore
             await player.play()
