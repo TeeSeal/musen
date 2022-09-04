@@ -52,7 +52,9 @@ class Play(BaseCommand):
 
         await interaction.response.send_message(response)
 
-        if not player.is_playing:
+        if not player.is_connected:
             player.store("channel", interaction.channel_id)
             await interaction.user.voice.channel.connect(cls=VoiceClient)  # type: ignore
+
+        if not player.is_playing:
             await player.play()
