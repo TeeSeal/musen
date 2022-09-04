@@ -15,6 +15,6 @@ class Invite(BaseCommand):
 
     async def callback(self, interaction: MusenInteraction) -> None:
         user = cast(ClientUser, interaction.client.user)
-        params = {"client_id": user.id, "scope": "bot", "permissions": 37080128}
+        params = {"client_id": user.id, "scope": "bot", "permissions": 36700160}
         url = "https://discord.com/api/oauth2/authorize?" + urlencode(params)
         await interaction.response.send_message(url)
