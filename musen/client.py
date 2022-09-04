@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import TYPE_CHECKING
 
 import discord
@@ -11,8 +12,6 @@ if TYPE_CHECKING:
 
     from commands.base_command import BaseCommand
 
-MY_GUILD = discord.Object(id=117271426867789833)
-
 
 class MusenClient(discord.Client):
     def __init__(self, intents: discord.Intents):
@@ -20,13 +19,14 @@ class MusenClient(discord.Client):
         self.tree = MusenCommandTree(self)
 
     async def setup_hook(self) -> None:
-        self.tree.copy_global_to(guild=MY_GUILD)
-        await self.tree.sync(guild=MY_GUILD)
+        guild_id = os.getenv("TEST_GUILD_ID")
 
-    # async def on_ready(self) -> None:
-    #     self.tree.clear_commands(guild=MY_GUILD)
-    #     self.tree.clear_commands(guild=None)
-    #     await self.tree.sync()
+        if guild_id:
+            guild = discord.Object(id=guild_id)
+            self.tree.copy_global_to(guild=guild)
+            await self.tree.sync(guild=guild)
+        else:
+            await self.tree.sync()
 
     async def on_connect(self) -> None:
         if not hasattr(self, "lavalink"):
