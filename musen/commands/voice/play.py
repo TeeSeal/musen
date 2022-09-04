@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from commands.base_command import BaseCommand
 from commands.checks import user_is_in_voice_channel
 from discord.app_commands import check, describe, guild_only
+from utils import format_track
 from voice.lavalink import VoiceClient
 
 if TYPE_CHECKING:
@@ -46,7 +47,8 @@ class Play(BaseCommand):
         else:
             track = results.tracks[0]
             player.add(requester=interaction.user.id, track=track)
-            response = f"Track enqueued\n[{track.title}]({track.uri})"
+            formatted = format_track(track, prefix="")
+            response = f"Track enqueued\n{formatted}"
 
         await interaction.response.send_message(response)
 
