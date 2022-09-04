@@ -28,3 +28,8 @@ class BotNotInVoiceChannel(MusenCommandError):
 class UserNotInCurrentVoiceChannel(MusenCommandError):
     async def handle(self, interaction: Interaction) -> None:
         await interaction.response.send_message("We must be in the same voice channel")
+
+
+class NotPlaying(MusenCommandError):
+    async def handle(self, interaction: Interaction) -> None:
+        await interaction.response.send_message("Nothing is playing currently")

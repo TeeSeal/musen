@@ -1,4 +1,4 @@
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from commands.errors import (
     BotNotInVoiceChannel,
@@ -7,6 +7,9 @@ from commands.errors import (
 )
 from custom_types import ConnectedVoiceInteraction, GuildInteraction
 from discord import Interaction
+
+if TYPE_CHECKING:
+    from lavalink import DefaultPlayer
 
 
 async def user_is_in_voice_channel(interaction: Interaction) -> bool:
@@ -41,3 +44,12 @@ async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
         return True
 
     raise UserNotInCurrentVoiceChannel
+
+
+async def track_playing(interaction: Interaction) -> bool:
+    interaction = cast(GuildInteraction, interaction)
+    player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
+        interaction.guild_id
+    )
+
+    return player.is_playing

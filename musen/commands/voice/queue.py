@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
-from commands.checks import bot_is_in_voice_channel
+from commands.checks import bot_is_in_voice_channel, track_playing
 from discord.app_commands import check, guild_only
 from utils import format_track
 
@@ -17,6 +17,7 @@ class Queue(BaseCommand):
 
     @guild_only
     @check(bot_is_in_voice_channel)
+    @check(track_playing)
     async def callback(self, interaction: ConnectedVoiceInteraction) -> None:
         player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
             interaction.guild_id

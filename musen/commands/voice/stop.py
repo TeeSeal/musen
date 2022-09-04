@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
-from commands.checks import user_is_in_same_voice_channel
+from commands.checks import track_playing, user_is_in_same_voice_channel
 from discord.app_commands import check, guild_only
 
 if TYPE_CHECKING:
@@ -16,6 +16,7 @@ class Stop(BaseCommand):
 
     @guild_only
     @check(user_is_in_same_voice_channel)
+    @check(track_playing)
     async def callback(self, interaction: ConnectedVoiceInteraction) -> None:
         player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
             interaction.guild_id
