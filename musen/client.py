@@ -35,7 +35,6 @@ class MusenClient(discord.Client):
         else:
             await self.tree.sync()
 
-    async def on_connect(self) -> None:
         if not hasattr(self, "lavalink"):
             self.lavalink = voice.LavalinkClient(self)
 
