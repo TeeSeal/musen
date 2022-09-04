@@ -2,14 +2,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from commands.base_command import BaseCommand
-from commands.checks import bot_is_in_voice_channel, track_playing
 from discord.app_commands import check, guild_only
-from utils import format_track
+
+from musen.commands.base_command import BaseCommand
+from musen.commands.checks import bot_is_in_voice_channel, track_playing
+from musen.utils import format_track
 
 if TYPE_CHECKING:
-    from custom_types import ConnectedVoiceInteraction
     from lavalink import DefaultPlayer
+
+    from musen.custom_types import ConnectedVoiceInteraction
 
 
 class Queue(BaseCommand):

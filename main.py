@@ -2,8 +2,9 @@ import logging
 import os
 
 import discord
-from client import MusenClient
-from commands import commands
+
+from musen.client import MusenClient
+from musen.commands import commands
 
 discord.utils.setup_logging()
 

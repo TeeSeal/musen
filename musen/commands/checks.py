@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING, cast
 
-from commands.errors import (
+from discord import Interaction
+
+from musen.commands.errors import (
     BotNotInVoiceChannel,
     UserNotInCurrentVoiceChannel,
     UserNotInVoiceChannel,
 )
-from custom_types import ConnectedVoiceInteraction, GuildInteraction
-from discord import Interaction
+from musen.custom_types import ConnectedVoiceInteraction, GuildInteraction
 
 if TYPE_CHECKING:
     from lavalink import DefaultPlayer

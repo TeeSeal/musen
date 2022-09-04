@@ -7,16 +7,19 @@ import discord
 import lavalink
 
 if TYPE_CHECKING:
-    from client import MusenClient
     from discord.types.voice import GuildVoiceState, VoiceServerUpdate
+
+    from musen.client import MusenClient
 
 
 class DiscordClientNotConnected(Exception):
     pass
 
 
-class EventHooks:
-    def __init__(self, musen_client: MusenClient, lavalink_client: Client) -> None:
+class LavalinkEventHooks:
+    def __init__(
+        self, musen_client: MusenClient, lavalink_client: LavalinkClient
+    ) -> None:
         self.musen = musen_client
         self.lavalink = lavalink_client
 
@@ -29,7 +32,7 @@ class EventHooks:
             await guild.voice_client.disconnect(force=True)
 
 
-class Client(lavalink.Client):
+class LavalinkClient(lavalink.Client):
     def __init__(self, musen_client: MusenClient):
         self.musen = musen_client
 
@@ -45,11 +48,11 @@ class Client(lavalink.Client):
             region=os.getenv("LAVALINK_REGION", "eu"),
         )
 
-        event_hooks = EventHooks(self.musen, self)
+        event_hooks = LavalinkEventHooks(self.musen, self)
         self.add_event_hooks(event_hooks)
 
 
-class VoiceClient(discord.VoiceClient):
+class LavalinkVoiceClient(discord.VoiceClient):
     def __init__(
         self, client: MusenClient, channel: discord.voice_client.VocalGuildChannel
     ):

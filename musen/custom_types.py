@@ -8,7 +8,7 @@ from discord.channel import StageChannel, VoiceChannel
 if TYPE_CHECKING:
     from typing import Union
 
-    from client import MusenClient
+    from musen.client import MusenClient
 
     VocalGuildChannel = Union[VoiceChannel, StageChannel]
 

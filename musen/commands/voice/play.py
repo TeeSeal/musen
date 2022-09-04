@@ -3,15 +3,17 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
 
-from commands.base_command import BaseCommand
-from commands.checks import user_is_in_voice_channel
 from discord.app_commands import check, describe, guild_only
-from utils import format_track
-from voice.lavalink import VoiceClient
+
+from musen.commands.base_command import BaseCommand
+from musen.commands.checks import user_is_in_voice_channel
+from musen.utils import format_track
+from musen.voice import LavalinkVoiceClient
 
 if TYPE_CHECKING:
-    from custom_types import VoiceInteraction
     from lavalink import DefaultPlayer
+
+    from musen.custom_types import VoiceInteraction
 
 
 url_rx = re.compile(r"https?://(?:www\.)?.+")
@@ -54,7 +56,7 @@ class Play(BaseCommand):
 
         if not player.is_connected:
             player.store("channel", interaction.channel_id)
-            await interaction.user.voice.channel.connect(cls=VoiceClient)  # type: ignore
+            await interaction.user.voice.channel.connect(cls=LavalinkVoiceClient)  # type: ignore
 
         if not player.is_playing:
             await player.play()

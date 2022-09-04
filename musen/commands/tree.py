@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from discord import app_commands
 
-from .errors import MusenCommandError
+from musen.commands.errors import MusenCommandError
 
 if TYPE_CHECKING:
     from discord import Interaction

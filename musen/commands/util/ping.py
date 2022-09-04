@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from commands.base_command import BaseCommand
+from musen.commands.base_command import BaseCommand
 
 if TYPE_CHECKING:
-    from custom_types import MusenInteraction
+    from musen.custom_types import MusenInteraction
 
 
 class Ping(BaseCommand):

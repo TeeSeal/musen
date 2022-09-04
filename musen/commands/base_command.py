@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from discord.utils import MISSING
-from utils import to_camel
+
+from musen.utils import to_camel
 
 if TYPE_CHECKING:
     from typing import Any, Optional, Sequence, Union

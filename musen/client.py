@@ -4,13 +4,14 @@ import os
 from typing import TYPE_CHECKING
 
 import discord
-from commands.tree import MusenCommandTree
-from voice import lavalink
+
+from musen import voice
+from musen.commands.tree import MusenCommandTree
 
 if TYPE_CHECKING:
     from typing import Type
 
-    from commands.base_command import BaseCommand
+    from musen.commands.base_command import BaseCommand
 
 
 class MusenClient(discord.Client):
@@ -30,7 +31,7 @@ class MusenClient(discord.Client):
 
     async def on_connect(self) -> None:
         if not hasattr(self, "lavalink"):
-            self.lavalink = lavalink.Client(self)
+            self.lavalink = voice.LavalinkClient(self)
 
     def register_command(self, cls: Type[BaseCommand]) -> None:
         command = cls()
