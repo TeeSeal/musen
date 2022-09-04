@@ -7,7 +7,10 @@ from commands import commands
 
 discord.utils.setup_logging()
 
-intents = discord.Intents.default()
+intents = discord.Intents()
+intents.guilds = True
+intents.voice_states = True
+
 client = MusenClient(intents)
 
 for command in commands:
