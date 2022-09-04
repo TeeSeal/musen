@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .util.ping import Ping
+from .voice.loop import Loop
 from .voice.play import Play
 from .voice.queue import Queue
 from .voice.skip import Skip
@@ -23,4 +24,5 @@ commands: list[Type[BaseCommand]] = [
     Skip,
     TogglePause,
     ToggleShuffle,
+    Loop,
 ]
