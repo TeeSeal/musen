@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from commands.base_command import BaseCommand
 from commands.checks import user_is_in_voice_channel
 from discord.app_commands import check, describe, guild_only
-from voice.lavalink_voice_client import LavalinkVoiceClient
+from voice.lavalink import VoiceClient
 
 if TYPE_CHECKING:
     from custom_types import VoiceInteraction
@@ -52,5 +52,5 @@ class Play(BaseCommand):
 
         if not player.is_playing:
             player.store("channel", interaction.channel_id)
-            await interaction.user.voice.channel.connect(cls=LavalinkVoiceClient)  # type: ignore
+            await interaction.user.voice.channel.connect(cls=VoiceClient)  # type: ignore
             await player.play()

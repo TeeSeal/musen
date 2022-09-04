@@ -1,15 +1,55 @@
 from __future__ import annotations
 
+import os
 from typing import TYPE_CHECKING
 
 import discord
+import lavalink
 
 if TYPE_CHECKING:
     from client import MusenClient
     from discord.types.voice import GuildVoiceState, VoiceServerUpdate
 
 
-class LavalinkVoiceClient(discord.VoiceClient):
+class DiscordClientNotConnected(Exception):
+    pass
+
+
+class EventHooks:
+    def __init__(self, musen_client: MusenClient, lavalink_client: Client) -> None:
+        self.musen = musen_client
+        self.lavalink = lavalink_client
+
+    @lavalink.listener(lavalink.events.QueueEndEvent)
+    async def on_queue_end(self, event: lavalink.events.QueueEndEvent) -> None:
+        guild_id = event.player.guild_id
+        guild = self.musen.get_guild(guild_id)
+
+        if guild and guild.voice_client:
+            await guild.voice_client.disconnect(force=True)
+
+
+class Client(lavalink.Client):
+    def __init__(self, musen_client: MusenClient):
+        self.musen = musen_client
+
+        if not musen_client.user:
+            raise DiscordClientNotConnected
+
+        super().__init__(musen_client.user.id)
+
+        self.add_node(
+            host=os.getenv("LAVALINK_HOST", "localhost"),
+            port=os.getenv("LAVALINK_PORT", 2333),
+            password=os.getenv("LAVALINK_PASSWORD", 2333),
+            region=os.getenv("LAVALINK_REGION", "eu"),
+        )
+
+        event_hooks = EventHooks(self.musen, self)
+        self.add_event_hooks(event_hooks)
+
+
+class VoiceClient(discord.VoiceClient):
     def __init__(
         self, client: MusenClient, channel: discord.voice_client.VocalGuildChannel
     ):

@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING
 
 import discord
-import lavalink
 from commands.tree import MusenCommandTree
+from voice import lavalink
 
 if TYPE_CHECKING:
     from commands.base_command import BaseCommand
@@ -28,14 +27,8 @@ class MusenClient(discord.Client):
     #     await self.tree.sync()
 
     async def on_connect(self) -> None:
-        if self.user is not None:
-            self.lavalink = lavalink.Client(self.user.id)
-            self.lavalink.add_node(
-                host=os.getenv("LAVALINK_HOST", "localhost"),
-                port=os.getenv("LAVALINK_PORT", 2333),
-                password=os.getenv("LAVALINK_PASSWORD", 2333),
-                region=os.getenv("LAVALINK_REGION", "eu"),
-            )
+        if not hasattr(self, "lavalink"):
+            self.lavalink = lavalink.Client(self)
 
     def register_command(self, command: BaseCommand) -> None:
         self.tree.command(
