@@ -7,10 +7,11 @@ from .voice.play import Play
 from .voice.queue import Queue
 from .voice.skip import Skip
 from .voice.stop import Stop
+from .voice.toggle_pause import TogglePause
 
 if TYPE_CHECKING:
     from typing import Type
 
     from .base_command import BaseCommand
 
-commands: list[Type[BaseCommand]] = [Ping, Play, Stop, Queue, Skip]
+commands: list[Type[BaseCommand]] = [Ping, Play, Stop, Queue, Skip, TogglePause]
