@@ -7,6 +7,8 @@ from commands.tree import MusenCommandTree
 from voice import lavalink
 
 if TYPE_CHECKING:
+    from typing import Type
+
     from commands.base_command import BaseCommand
 
 MY_GUILD = discord.Object(id=117271426867789833)
@@ -30,7 +32,8 @@ class MusenClient(discord.Client):
         if not hasattr(self, "lavalink"):
             self.lavalink = lavalink.Client(self)
 
-    def register_command(self, command: BaseCommand) -> None:
+    def register_command(self, cls: Type[BaseCommand]) -> None:
+        command = cls()
         self.tree.command(
             name=command.name,
             description=command.description,
