@@ -43,8 +43,8 @@ class LavalinkClient(lavalink.Client):
 
         self.add_node(
             host=os.getenv("LAVALINK_HOST", "localhost"),
-            port=os.getenv("LAVALINK_PORT", 2333),
-            password=os.getenv("LAVALINK_PASSWORD", 2333),
+            port=int(os.getenv("LAVALINK_PORT", "2333")),
+            password=os.getenv("LAVALINK_PASSWORD", "2333"),
             region=os.getenv("LAVALINK_REGION", "eu"),
         )
 
@@ -56,8 +56,9 @@ class LavalinkVoiceClient(discord.VoiceClient):
     def __init__(
         self, client: MusenClient, channel: discord.voice_client.VocalGuildChannel
     ):
+        super().__init__(client, channel)
         self.client = client
-        self.channel = channel
+        self.channel_id = channel.id
         self.lavalink = self.client.lavalink
 
     async def on_voice_server_update(self, data: VoiceServerUpdate) -> None:
@@ -65,6 +66,9 @@ class LavalinkVoiceClient(discord.VoiceClient):
         await self.lavalink.voice_update_handler(lavalink_data)
 
     async def on_voice_state_update(self, data: GuildVoiceState) -> None:
+        if int(data["member"]["user"]["id"]) == self.client.user.id:
+            self.channel_id = int(data["channel_id"])
+
         lavalink_data = {"t": "VOICE_STATE_UPDATE", "d": data}
         await self.lavalink.voice_update_handler(lavalink_data)
 

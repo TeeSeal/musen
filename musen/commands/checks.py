@@ -41,7 +41,7 @@ async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
 
     interaction = cast(ConnectedVoiceInteraction, interaction)
 
-    if interaction.user.voice.channel.id == interaction.guild.voice_client.channel.id:
+    if interaction.user.voice.channel.id == interaction.guild.voice_client.channel_id:
         return True
 
     raise UserNotInCurrentVoiceChannel
