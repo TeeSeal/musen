@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 import discord
 import lavalink
+from lavalink import DefaultPlayer
 
 if TYPE_CHECKING:
     from discord.types.voice import GuildVoiceState, VoiceServerUpdate
@@ -66,9 +67,7 @@ class LavalinkVoiceClient(discord.VoiceClient):
         await self.lavalink.voice_update_handler(lavalink_data)
 
     async def on_voice_state_update(self, data: GuildVoiceState) -> None:
-        if int(data["member"]["user"]["id"]) == self.client.user.id:
-            self.channel_id = int(data["channel_id"])
-
+        self.set_channel_id(data)
         lavalink_data = {"t": "VOICE_STATE_UPDATE", "d": data}
         await self.lavalink.voice_update_handler(lavalink_data)
 
@@ -86,7 +85,9 @@ class LavalinkVoiceClient(discord.VoiceClient):
         )
 
     async def disconnect(self, *, force: bool = False) -> None:
-        player = self.lavalink.player_manager.get(self.channel.guild.id)
+        player = cast(
+            DefaultPlayer, self.lavalink.player_manager.get(self.channel.guild.id)
+        )
 
         if not force and not player.is_connected:
             return
@@ -95,3 +96,10 @@ class LavalinkVoiceClient(discord.VoiceClient):
 
         player.channel_id = None
         self.cleanup()
+
+    def set_channel_id(self, data: GuildVoiceState) -> None:
+        if "member" not in data or not self.client or not self.client.user:
+            return
+
+        if int(data["member"]["user"]["id"]) == self.client.user.id:
+            self.channel_id = int(data["channel_id"])

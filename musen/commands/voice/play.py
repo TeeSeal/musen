@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from discord.app_commands import check, describe, guild_only
+from lavalink import DefaultPlayer
 
 from musen.commands.base_command import BaseCommand
 from musen.commands.checks import user_is_in_voice_channel
@@ -11,8 +12,6 @@ from musen.utils import format_track
 from musen.voice import LavalinkVoiceClient
 
 if TYPE_CHECKING:
-    from lavalink import DefaultPlayer
-
     from musen.custom_types import VoiceInteraction
 
 
@@ -26,8 +25,9 @@ class Play(BaseCommand):
     @check(user_is_in_voice_channel)
     @describe(query="URL or search query")
     async def callback(self, interaction: VoiceInteraction, query: str) -> None:
-        player: DefaultPlayer = interaction.client.lavalink.player_manager.create(
-            interaction.guild_id
+        player = cast(
+            DefaultPlayer,
+            interaction.client.lavalink.player_manager.get(interaction.guild.id),
         )
         query = query.strip("<>")
 

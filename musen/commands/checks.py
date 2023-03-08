@@ -1,6 +1,7 @@
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
 from discord import Interaction
+from lavalink import DefaultPlayer
 
 from musen.commands.errors import (
     BotNotInVoiceChannel,
@@ -8,9 +9,7 @@ from musen.commands.errors import (
     UserNotInVoiceChannel,
 )
 from musen.custom_types import ConnectedVoiceInteraction, GuildInteraction
-
-if TYPE_CHECKING:
-    from lavalink import DefaultPlayer
+from musen.voice import LavalinkVoiceClient
 
 
 async def user_is_in_voice_channel(interaction: Interaction) -> bool:
@@ -40,8 +39,9 @@ async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
         raise UserNotInCurrentVoiceChannel
 
     interaction = cast(ConnectedVoiceInteraction, interaction)
+    voice_client = cast(LavalinkVoiceClient, interaction.guild.voice_client)
 
-    if interaction.user.voice.channel.id == interaction.guild.voice_client.channel_id:
+    if interaction.user.voice.channel.id == voice_client.channel_id:
         return True
 
     raise UserNotInCurrentVoiceChannel
@@ -49,8 +49,10 @@ async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
 
 async def track_playing(interaction: Interaction) -> bool:
     interaction = cast(GuildInteraction, interaction)
-    player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
-        interaction.guild_id
+
+    player = cast(
+        DefaultPlayer,
+        interaction.client.lavalink.player_manager.get(interaction.guild.id),
     )
 
     return player.is_playing
