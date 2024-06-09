@@ -13,13 +13,15 @@ if TYPE_CHECKING:
     from musen.client import MusenClient
 
 
-class DiscordClientNotConnected(Exception):
+class DiscordClientNotConnectedError(Exception):
     pass
 
 
 class LavalinkEventHooks:
     def __init__(
-        self, musen_client: MusenClient, lavalink_client: LavalinkClient
+        self,
+        musen_client: MusenClient,
+        lavalink_client: LavalinkClient,
     ) -> None:
         self.musen = musen_client
         self.lavalink = lavalink_client
@@ -34,11 +36,11 @@ class LavalinkEventHooks:
 
 
 class LavalinkClient(lavalink.Client):
-    def __init__(self, musen_client: MusenClient):
+    def __init__(self, musen_client: MusenClient) -> None:
         self.musen = musen_client
 
         if not musen_client.user:
-            raise DiscordClientNotConnected
+            raise DiscordClientNotConnectedError
 
         super().__init__(musen_client.user.id)
 
@@ -55,8 +57,10 @@ class LavalinkClient(lavalink.Client):
 
 class LavalinkVoiceClient(discord.VoiceClient):
     def __init__(
-        self, client: MusenClient, channel: discord.voice_client.VocalGuildChannel
-    ):
+        self,
+        client: MusenClient,
+        channel: discord.voice_client.VocalGuildChannel,
+    ) -> None:
         super().__init__(client, channel)
         self.client = client
         self.channel_id = channel.id
@@ -74,19 +78,22 @@ class LavalinkVoiceClient(discord.VoiceClient):
     async def connect(
         self,
         *,
-        timeout: float,
-        reconnect: bool,
+        timeout: float,  # noqa: ARG002
+        reconnect: bool,  # noqa: ARG002
         self_deaf: bool = False,
         self_mute: bool = False,
     ) -> None:
         self.lavalink.player_manager.create(guild_id=self.channel.guild.id)
         await self.channel.guild.change_voice_state(
-            channel=self.channel, self_mute=self_mute, self_deaf=self_deaf
+            channel=self.channel,
+            self_mute=self_mute,
+            self_deaf=self_deaf,
         )
 
     async def disconnect(self, *, force: bool = False) -> None:
         player = cast(
-            DefaultPlayer, self.lavalink.player_manager.get(self.channel.guild.id)
+            DefaultPlayer,
+            self.lavalink.player_manager.get(self.channel.guild.id),
         )
 
         if not force and not player.is_connected:

@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from discord import Guild, Interaction, Member, VoiceClient, VoiceState
-from discord.channel import StageChannel, VoiceChannel
 
 if TYPE_CHECKING:
     from typing import Union
+
+    from discord.channel import StageChannel, VoiceChannel
 
     from musen.client import MusenClient
 

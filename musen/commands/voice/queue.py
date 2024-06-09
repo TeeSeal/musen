@@ -20,9 +20,9 @@ class Queue(BaseCommand):
     @guild_only
     @check(bot_is_in_voice_channel)
     @check(track_playing)
-    async def callback(self, interaction: ConnectedVoiceInteraction) -> None:
+    async def callback(self, interaction: ConnectedVoiceInteraction) -> None:  # type: ignore[override]
         player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
-            interaction.guild_id
+            interaction.guild_id,
         )
 
         response_lines = []

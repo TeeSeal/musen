@@ -1,0 +1,51 @@
+[project]
+name = "musen"
+version = "0.0.1"
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "ANN",
+    "ARG",
+    "B",
+    "COM",
+    # "CPY", unstable
+    "E",
+    "F",
+    "FA",
+    "FBT",
+    "FIX",
+    # "FURB", unstable
+    "I",
+    "ICN",
+    "ISC",
+    "N",
+    "PIE",
+    "PT",
+    "PTH",
+    "PYI",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "T10",
+    "TCH",
+    "TID",
+    "TRY",
+    "W",
+]
+ignore = ["ANN101", "ANN102", "B006", "S113", "TRY002", "TRY003"]
+flake8-unused-arguments = { ignore-variadic-names = true }
+flake8-annotations = { allow-star-arg-any = true }

@@ -38,7 +38,7 @@ class MusenClient(discord.Client):
         if not hasattr(self, "lavalink"):
             self.lavalink = voice.LavalinkClient(self)
 
-    def run(self, *args: Any, **kwargs: Any) -> None:
+    def run(self, *_args: Any, **_kwargs: Any) -> None:
         discord.utils.setup_logging()
         token = os.getenv("TOKEN")
 

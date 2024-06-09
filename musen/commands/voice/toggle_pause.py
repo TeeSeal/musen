@@ -19,9 +19,9 @@ class TogglePause(BaseCommand):
     @guild_only
     @check(user_is_in_same_voice_channel)
     @check(track_playing)
-    async def callback(self, interaction: ConnectedVoiceInteraction) -> None:
+    async def callback(self, interaction: ConnectedVoiceInteraction) -> None:  # type: ignore[override]
         player: DefaultPlayer = interaction.client.lavalink.player_manager.get(
-            interaction.guild_id
+            interaction.guild_id,
         )
 
         response = "Resumed" if player.paused else "Paused"

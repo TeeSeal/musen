@@ -4,9 +4,9 @@ from discord import Interaction
 from lavalink import DefaultPlayer
 
 from musen.commands.errors import (
-    BotNotInVoiceChannel,
-    UserNotInCurrentVoiceChannel,
-    UserNotInVoiceChannel,
+    BotNotInVoiceChannelError,
+    UserNotInCurrentVoiceChannelError,
+    UserNotInVoiceChannelError,
 )
 from musen.custom_types import ConnectedVoiceInteraction, GuildInteraction
 from musen.voice import LavalinkVoiceClient
@@ -18,7 +18,7 @@ async def user_is_in_voice_channel(interaction: Interaction) -> bool:
     if interaction.user.voice and interaction.user.voice.channel:
         return True
 
-    raise UserNotInVoiceChannel
+    raise UserNotInVoiceChannelError
 
 
 async def bot_is_in_voice_channel(interaction: Interaction) -> bool:
@@ -27,7 +27,7 @@ async def bot_is_in_voice_channel(interaction: Interaction) -> bool:
     if interaction.guild.voice_client and interaction.guild.voice_client.channel:
         return True
 
-    raise BotNotInVoiceChannel
+    raise BotNotInVoiceChannelError
 
 
 async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
@@ -35,8 +35,8 @@ async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
 
     try:
         await user_is_in_voice_channel(interaction)
-    except UserNotInVoiceChannel:
-        raise UserNotInCurrentVoiceChannel
+    except UserNotInVoiceChannelError as err:
+        raise UserNotInCurrentVoiceChannelError from err
 
     interaction = cast(ConnectedVoiceInteraction, interaction)
     voice_client = cast(LavalinkVoiceClient, interaction.guild.voice_client)
@@ -44,7 +44,7 @@ async def user_is_in_same_voice_channel(interaction: Interaction) -> bool:
     if interaction.user.voice.channel.id == voice_client.channel_id:
         return True
 
-    raise UserNotInCurrentVoiceChannel
+    raise UserNotInCurrentVoiceChannelError
 
 
 async def track_playing(interaction: Interaction) -> bool:

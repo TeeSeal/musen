@@ -11,5 +11,5 @@ if TYPE_CHECKING:
 class Ping(BaseCommand):
     description = "Pong!"
 
-    async def callback(self, interaction: MusenInteraction) -> None:
+    async def callback(self, interaction: MusenInteraction) -> None:  # type: ignore[override]
         await interaction.response.send_message("Pong!")

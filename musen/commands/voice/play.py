@@ -24,7 +24,7 @@ class Play(BaseCommand):
     @guild_only
     @check(user_is_in_voice_channel)
     @describe(query="URL or search query")
-    async def callback(self, interaction: VoiceInteraction, query: str) -> None:
+    async def callback(self, interaction: VoiceInteraction, query: str) -> None:  # type: ignore[override]
         player = cast(
             DefaultPlayer,
             interaction.client.lavalink.player_manager.get(interaction.guild.id),
@@ -45,7 +45,10 @@ class Play(BaseCommand):
             for track in tracks:
                 player.add(requester=interaction.user.id, track=track)
 
-            response = f"Playlist enqueued\n{results.playlist_info.name} - {len(tracks)} tracks"
+            response = (
+                f"Playlist enqueued\n"
+                f"{results.playlist_info.name} - {len(tracks)} tracks"
+            )
         else:
             track = results.tracks[0]
             player.add(requester=interaction.user.id, track=track)
@@ -60,3 +63,5 @@ class Play(BaseCommand):
 
         if not player.is_playing:
             await player.play()
+            return None
+        return None

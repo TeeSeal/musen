@@ -15,7 +15,7 @@ _log = logging.getLogger(__name__)
 
 class MusenCommandTree(app_commands.CommandTree):
     async def on_error(
-        self, interaction: Interaction, error: app_commands.AppCommandError, /
+        self, interaction: Interaction, error: app_commands.AppCommandError, /,
     ) -> None:
         if isinstance(error, MusenCommandError):
             if isinstance(interaction.command, app_commands.Command):
@@ -23,7 +23,7 @@ class MusenCommandTree(app_commands.CommandTree):
                 user = interaction.user
                 err = error.__class__.__name__
                 _log.info(
-                    f"{user.name}({user.id}) failed to run `{command_name}`: {err}"
+                    f"{user.name}({user.id}) failed to run `{command_name}`: {err}",
                 )
 
             return await error.handle(interaction)

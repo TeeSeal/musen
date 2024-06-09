@@ -11,25 +11,24 @@ if TYPE_CHECKING:
 
 class MusenCommandError(AppCommandError, ABC):
     @abstractmethod
-    async def handle(self, interaction: Interaction) -> None:
-        ...
+    async def handle(self, interaction: Interaction) -> None: ...
 
 
-class UserNotInVoiceChannel(MusenCommandError):
+class UserNotInVoiceChannelError(MusenCommandError):
     async def handle(self, interaction: Interaction) -> None:
         await interaction.response.send_message("You must be in a voice channel")
 
 
-class BotNotInVoiceChannel(MusenCommandError):
+class BotNotInVoiceChannelError(MusenCommandError):
     async def handle(self, interaction: Interaction) -> None:
         await interaction.response.send_message("Not connected")
 
 
-class UserNotInCurrentVoiceChannel(MusenCommandError):
+class UserNotInCurrentVoiceChannelError(MusenCommandError):
     async def handle(self, interaction: Interaction) -> None:
         await interaction.response.send_message("We must be in the same voice channel")
 
 
-class NotPlaying(MusenCommandError):
+class NotPlayingError(MusenCommandError):
     async def handle(self, interaction: Interaction) -> None:
         await interaction.response.send_message("Nothing is playing currently")

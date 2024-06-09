@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 class Invite(BaseCommand):
     description = "Get my invitation URL"
 
-    async def callback(self, interaction: MusenInteraction) -> None:
+    async def callback(self, interaction: MusenInteraction) -> None:  # type: ignore[override]
         user = cast(ClientUser, interaction.client.user)
         params = {"client_id": user.id, "scope": "bot", "permissions": 36700160}
         url = "https://discord.com/api/oauth2/authorize?" + urlencode(params)
