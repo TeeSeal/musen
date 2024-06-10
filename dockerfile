@@ -1,4 +1,7 @@
-FROM python:3.11
+FROM python:3.11-alpine
+
+RUN apk update
+RUN apk add gcc libc-dev libffi-dev libsodium-dev python3-dev
 
 WORKDIR /app
 COPY . .
