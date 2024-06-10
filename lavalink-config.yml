@@ -3,7 +3,6 @@ server: # REST and WS server
   address: 0.0.0.0
 lavalink:
   server:
-    password: "password"
     sources:
       youtube: false
       bandcamp: false
