@@ -2,4 +2,4 @@
 
 ruff
 mypy
-python-dotenv
+python-dotenv[cli]

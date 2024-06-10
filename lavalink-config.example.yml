@@ -1,0 +1,41 @@
+server: # REST and WS server
+  port: 2333
+  address: 0.0.0.0
+lavalink:
+  server:
+    password: "password"
+    sources:
+      youtube: false
+      bandcamp: false
+      soundcloud: false
+      twitch: false
+      vimeo: false
+      mixer: false
+      http: false
+      local: false
+    bufferDurationMs: 400
+    youtubePlaylistLoadLimit: 6 # Number of pages at 100 each
+    youtubeSearchEnabled: true
+    soundcloudSearchEnabled: true
+    gc-warnings: true
+  plugins:
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.3.0"
+      snapshot: false # Set to true if you want to use a snapshot version.
+
+plugins:
+  youtube:
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
+    allowDirectPlaylistIds: true
+    clients:
+      - WEB
+
+logging:
+  file:
+    max-history: 30
+    max-size: 1GB
+  path: ./logs/
+  level:
+    root: INFO
+    lavalink: INFO

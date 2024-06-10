@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from discord.app_commands import check, describe, guild_only
 from lavalink import DefaultPlayer
@@ -25,11 +25,11 @@ class Play(BaseCommand):
     @check(user_is_in_voice_channel)
     @describe(query="URL or search query")
     async def callback(self, interaction: VoiceInteraction, query: str) -> None:  # type: ignore[override]
-        player = cast(
-            DefaultPlayer,
-            interaction.client.lavalink.player_manager.get(interaction.guild.id),
-        )
         query = query.strip("<>")
+        player = interaction.client.lavalink.player_manager.create(
+            interaction.guild.id,
+            cls=DefaultPlayer,
+        )
 
         if not url_rx.match(query):
             query = f"ytsearch:{query}"
